@@ -29,12 +29,12 @@ namespace WebAppDemo.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            // Fluent API kullanarak model yapılandırmaları ekleyebilirsiniz.
+            
 
             modelBuilder.Entity<ProductAttribute>()
-        .HasKey(pa => pa.AttributeID);  // Birincil anahtar olarak açıkça belirtildi
+        .HasKey(pa => pa.AttributeID); 
 
-            // Relationship configuration
+          
             modelBuilder.Entity<Product>()
                 .HasOne(p => p.ProductCategory)
                 .WithMany(pc => pc.Products)

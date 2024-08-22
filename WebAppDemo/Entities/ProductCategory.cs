@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 public class ProductCategory
 {
-    [Key] public int CategoryID { get; set; }  // Primary Key
+    [Key] public int CategoryID { get; set; } 
     public string CategoryName { get; set; }
     public string Description { get; set; }
 
     // Navigation property
+    [JsonIgnore]
     public ICollection<Product> Products { get; set; }
 }

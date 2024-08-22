@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 public class Product
 {
@@ -14,8 +15,15 @@ public class Product
     public string ImageURL { get; set; }
 
     // Navigation properties
-    public ProductCategory ProductCategory { get; set; }  // Correct type
+    [JsonIgnore]
+    public ProductCategory ProductCategory { get; set; } 
+
+    [JsonIgnore]
     public ICollection<ProductAttribute> ProductAttributes { get; set; }
+
+    [JsonIgnore]
     public ICollection<Inventory> Inventories { get; set; }
+
+    [JsonIgnore]
     public ICollection<OrderDetail> OrderDetails { get; set; }
 }
