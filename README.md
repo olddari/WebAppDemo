@@ -7,7 +7,7 @@ Bu işlevselliği React projemde yavaş yavaş entegre etmeye başlayacağım. A
 
 
 
-
+#21.08.2024
 Bugün projeye birkaç önemli ekleme yaptım. Öncelikle, ApplicationController adında bir controller ekledim. Bu controller Microsoft.EntityFrameworkCore gibi gerekli kütüphaneleri kullanarak veritabanı işlemlerini yönetiyor.
 
 Uygulama Controller'i GetProducts adında bir endpoint oluşturdum. Bu metod, veritabanındaki ürünleri listeleyen bir GET isteği olarak çalışıyor. Ürünlerle birlikte, ProductCategory ve ProductAttributes gibi ilişkili verileri de dahil ettim. Eğer ürün bulunmazsa, NotFound mesajı döndürülüyor.
