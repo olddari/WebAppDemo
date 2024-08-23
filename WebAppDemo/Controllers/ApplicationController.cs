@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAppDemo.Data;
@@ -14,10 +17,12 @@ namespace WebAppDemo.Controllers
     public class ApplicationController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _env;
 
-        public ApplicationController(ApplicationDbContext context)
+        public ApplicationController(ApplicationDbContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
         }
 
         // GET: api/application/products
@@ -170,6 +175,40 @@ namespace WebAppDemo.Controllers
             }
 
             return Ok(products);
+        }
+
+        [HttpPost("products/{id}/upload-image")]
+        public async Task<IActionResult> UploadImage(int id, IFormFile image)
+        {
+            var product = await _context.Products.FindAsync(id);
+            if (product == null)
+            {
+                return NotFound("Product not found.");
+            }
+
+            if (image == null || image.Length == 0)
+            {
+                return BadRequest("No image uploaded.");
+            }
+
+            var uploadsFolder = Path.Combine(_env.WebRootPath, "uploads");
+            var uniqueFileName = Guid.NewGuid().ToString() + "_" + image.FileName;
+            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            Directory.CreateDirectory(uploadsFolder);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await image.CopyToAsync(fileStream);
+            }
+
+            var imageURL = $"/uploads/{uniqueFileName}";
+
+            product.ImageURL = imageURL;
+            _context.Entry(product).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { imageURL });
         }
     }
 }
