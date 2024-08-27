@@ -56,10 +56,8 @@ namespace WebAppDemo.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProductCategory(int id, ProductCategory productCategory)
         {
-            if (id != productCategory.CategoryID)
-            {
-                return BadRequest("Category ID mismatch.");
-            }
+
+            productCategory.CategoryID = id; 
 
             _context.Entry(productCategory).State = EntityState.Modified;
 
