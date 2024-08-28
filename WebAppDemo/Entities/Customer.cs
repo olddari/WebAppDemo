@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System;
 
 public class Customer
 {
@@ -17,6 +17,7 @@ public class Customer
     public DateTime? DateOfBirth { get; set; }
     public DateTime RegistrationDate { get; set; }
 
-    // Navigation properties
+    public string Password { get; set; }
+
     public ICollection<Order> Orders { get; set; }
 }
