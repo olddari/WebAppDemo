@@ -1,14 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Reflection.Emit;
+using WebAppDemo.Models;
 
 namespace WebAppDemo.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) 
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-
         }
 
         public DbSet<ProductCategory> ProductCategories { get; set; }
@@ -18,27 +16,31 @@ namespace WebAppDemo.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Customer> Customers { get; set; }
-
-        /* protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-           {
-               // Bağlantı dizenizi buraya ekleyin
-               optionsBuilder.UseSqlServer("YourConnectionStringHere");
-           }
-        */
+        public DbSet<Role> Roles { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            
 
             modelBuilder.Entity<ProductAttribute>()
-        .HasKey(pa => pa.AttributeID); 
+                .HasKey(pa => pa.AttributeID);
 
-          
             modelBuilder.Entity<Product>()
                 .HasOne(p => p.ProductCategory)
                 .WithMany(pc => pc.Products)
                 .HasForeignKey(p => p.CategoryID);
+
+            modelBuilder.Entity<Customer>()
+                .HasOne(c => c.Role)
+                .WithMany()
+                .HasForeignKey(c => c.RoleID);
+
+            modelBuilder.Entity<Role>().HasData(
+                new Role { RoleID = 1, RoleName = "Admin", Description = "System Administrator" },
+                new Role { RoleID = 2, RoleName = "Writer", Description = "Content Writer" },
+                new Role { RoleID = 3, RoleName = "Member", Description = "General Member" },
+                new Role { RoleID = 4, RoleName = "Moderator", Description = "Content Moderator" }
+            );
         }
     }
 }

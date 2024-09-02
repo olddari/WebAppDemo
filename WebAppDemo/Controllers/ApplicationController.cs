@@ -74,16 +74,30 @@ namespace WebAppDemo.Controllers
             return CreatedAtAction(nameof(GetProductById), new { id = product.ProductID }, product);
         }
 
-        // PUT: api/application/products/5
         [HttpPut("products/{id}")]
-        public async Task<IActionResult> PutProduct(int id, Product product)
+        public async Task<IActionResult> PutProduct(int id, [FromBody] Product product)
         {
-            if (id != product.ProductID)
+            var existingProduct = await _context.Products.FindAsync(id);
+
+            if (existingProduct == null)
             {
-                return BadRequest("Product ID mismatch.");
+                return NotFound("Product not found.");
             }
 
-            _context.Entry(product).State = EntityState.Modified;
+            if (product.CategoryID != 0 && existingProduct.CategoryID != product.CategoryID)
+            {
+                existingProduct.CategoryID = product.CategoryID;
+            }
+
+            existingProduct.ProductName = product.ProductName;
+            existingProduct.Brand = product.Brand;
+            existingProduct.Model = product.Model;
+            existingProduct.Price = product.Price;
+            existingProduct.StockQuantity = product.StockQuantity;
+            existingProduct.Description = product.Description;
+            existingProduct.ImageURL = product.ImageURL;
+
+            _context.Entry(existingProduct).State = EntityState.Modified;
 
             try
             {
@@ -103,6 +117,7 @@ namespace WebAppDemo.Controllers
 
             return NoContent();
         }
+
 
         // DELETE: api/application/products/5
         [HttpDelete("products/{id}")]

@@ -6,6 +6,5 @@
     public string Color { get; set; }
     public int StockQuantity { get; set; }
 
-    // Navigation property
     public Product Product { get; set; }
 }

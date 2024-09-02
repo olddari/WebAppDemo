@@ -19,7 +19,7 @@ public class Product
     public string Description { get; set; }
     public string ImageURL { get; set; }
 
-    // Navigation properties
+
     [JsonIgnore]
     public ProductCategory ProductCategory { get; set; } 
 

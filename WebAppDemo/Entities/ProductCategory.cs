@@ -8,7 +8,6 @@ public class ProductCategory
     public string CategoryName { get; set; }
     public string Description { get; set; }
 
-    // Navigation property
     [JsonIgnore]
     public ICollection<Product> Products { get; set; }
 }

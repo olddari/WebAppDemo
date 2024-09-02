@@ -6,6 +6,5 @@ public class ProductAttribute
     public string AttributeName { get; set; }
     public string AttributeValue { get; set; }
 
-    // Navigation property
     public Product Product { get; set; }
 }

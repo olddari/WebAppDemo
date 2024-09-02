@@ -25,7 +25,7 @@ namespace WebAppDemo.Controllers
         public async Task<ActionResult<IEnumerable<Inventory>>> GetInventories()
         {
             var inventories = await _context.Inventories
-                .Include(i => i.Product) // Include related Product
+                .Include(i => i.Product)
                 .ToListAsync();
 
             return Ok(inventories);
@@ -36,7 +36,7 @@ namespace WebAppDemo.Controllers
         public async Task<ActionResult<Inventory>> GetInventory(int id)
         {
             var inventory = await _context.Inventories
-                .Include(i => i.Product) // Include related Product
+                .Include(i => i.Product) 
                 .FirstOrDefaultAsync(i => i.InventoryID == id);
 
             if (inventory == null)

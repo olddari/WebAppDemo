@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAppDemo.Data;
 
 namespace WebAppDemo.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240829144233_SeedRoles")]
+    partial class SeedRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,15 +64,10 @@ namespace WebAppDemo.Data.Migrations
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RoleID")
-                        .HasColumnType("int");
-
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CustomerID");
-
-                    b.HasIndex("RoleID");
 
                     b.ToTable("Customers");
                 });
@@ -276,15 +273,6 @@ namespace WebAppDemo.Data.Migrations
                             Description = "Content Moderator",
                             RoleName = "Moderator"
                         });
-                });
-
-            modelBuilder.Entity("Customer", b =>
-                {
-                    b.HasOne("Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleID");
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Inventory", b =>
